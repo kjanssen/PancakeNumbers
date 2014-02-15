@@ -9,8 +9,13 @@ public class PancakeNumbers {
 
     public PancakeNumbers (int size) {
 
-        nums = new int[size];
-        initialize();
+        if (size == 0)
+            nums = new int[] {1, 3, 6, 4, 2, 5};
+        else {
+            nums = new int[size];
+            initialize();
+        }
+
         turnCount = 0;
     }
 
@@ -29,9 +34,17 @@ public class PancakeNumbers {
         }
     }
 
+    public int getTurnCount () {
+        return turnCount;
+    }
+
+    public int[] getNums () {
+        return nums;
+    }
+
     public String toString () {
 
-        String out = "\n ";
+        String out = "\n  ";
 
         for (int i = 0; i < nums.length; i++)
             out += (i + 1) + " ";
@@ -56,6 +69,8 @@ public class PancakeNumbers {
 
         for (int i = 0; i < flipSize; i++)
             nums[i + from - 1] = temp[flipSize - i - 1];
+
+        turnCount++;
     }
 
     public Boolean done () {
