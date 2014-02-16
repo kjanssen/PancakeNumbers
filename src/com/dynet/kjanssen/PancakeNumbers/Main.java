@@ -24,8 +24,12 @@ public class Main {
                 from = input.nextInt();
                 to = input.nextInt();
 
-                pancakeNumbers.flip(from, to);
-                System.out.println(pancakeNumbers);
+                if (from == 1 && to == 1)
+                    System.out.println(pancakeNumbers.getMoves());
+                else {
+                    pancakeNumbers.move(from, to);
+                    System.out.println(pancakeNumbers);
+                }
             }
 
             System.out.println("\nYou took " + pancakeNumbers.getTurnCount() + " turns.");

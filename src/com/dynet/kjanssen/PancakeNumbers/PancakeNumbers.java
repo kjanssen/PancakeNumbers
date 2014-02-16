@@ -6,6 +6,9 @@ public class PancakeNumbers {
 
     private int[] nums;
     private int turnCount;
+    private int depth;
+    private int lastFrom;
+    private int lastTo;
 
     public PancakeNumbers (int size) {
 
@@ -17,6 +20,9 @@ public class PancakeNumbers {
         }
 
         turnCount = 0;
+        depth = 0;
+        lastFrom = -1;
+        lastTo = -1;
     }
 
     private void initialize() {
@@ -38,8 +44,8 @@ public class PancakeNumbers {
         return turnCount;
     }
 
-    public int[] getNums () {
-        return nums;
+    public int[] getState () {
+        return nums.clone();
     }
 
     public String toString () {
@@ -54,12 +60,25 @@ public class PancakeNumbers {
         for (int i = 0; i < nums.length; i++)
             out += nums[i] + " ";
 
-        out += ">  Breakpoints: " + numBreakpoints();
+        out += ">  h(x): " + h() + ", g(x): " + depth + ", f(x): " + (h() + depth);
 
         return out;
     }
 
-    public void flip (int from, int to) {
+    public void move (int from, int to) {
+        flip(from, to);
+        turnCount++;
+    }
+
+    private void flip (int from, int to) {
+
+        if (from == lastFrom && to == lastTo)
+            depth--;
+        else
+            depth++;
+
+        lastFrom = from;
+        lastTo = to;
 
         int flipSize = to - from + 1;
         int temp[] = new int[flipSize];
@@ -69,8 +88,6 @@ public class PancakeNumbers {
 
         for (int i = 0; i < flipSize; i++)
             nums[i + from - 1] = temp[flipSize - i - 1];
-
-        turnCount++;
     }
 
     public Boolean done () {
@@ -92,4 +109,46 @@ public class PancakeNumbers {
 
         return count;
     }
+
+    public int h() {
+        return numBreakpoints() / 2;
+    }
+
+    public String getMoves () {
+        StringBuilder stringBuilder = new StringBuilder();
+        int currBreakpoints = numBreakpoints();
+
+        for (int i = 1; i < nums.length; i++)
+            for (int j = i + 1; j < nums.length + 1; j++) {
+                flip(i, j);
+
+                if (true) { //numBreakpoints() < currBreakpoints) {
+                    stringBuilder.append("\n" + i + ", " + j + ": < ");
+                    for (int k = 0; k < nums.length; k++)
+                        stringBuilder.append(nums[k] + " ");
+                    stringBuilder.append(">  h(x): " + h() + ", g(x): " + depth + ", f(x): " + (h() + depth));
+                }
+
+                flip(i, j);
+            }
+
+        return stringBuilder.toString();
+    }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
