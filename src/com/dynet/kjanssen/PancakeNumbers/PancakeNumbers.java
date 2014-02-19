@@ -53,8 +53,8 @@ public class PancakeNumbers {
         return turnCount;
     }
 
-    public int[] getState () {
-        return nums.clone();
+    public PancakeNumbersState getState () {
+        return new PancakeNumbersState(nums, h(), depth);
     }
 
     public String toString () {
@@ -139,12 +139,10 @@ public class PancakeNumbers {
             for (int j = i + 1; j < nums.length + 1; j++) {
                 flip(i, j);
 
-                if (true) {
-                    stringBuilder.append("\n" + i + ", " + j + ": < ");
-                    for (int k = 0; k < nums.length; k++)
-                        stringBuilder.append(nums[k] + " ");
-                    stringBuilder.append(">  h(x): " + h() + ", g(x): " + depth + ", f(x): " + (h() + depth));
-                }
+                stringBuilder.append("\n" + i + ", " + j + ": < ");
+                for (int k = 0; k < nums.length; k++)
+                    stringBuilder.append(nums[k] + " ");
+                stringBuilder.append(">  h(x): " + h() + ", g(x): " + depth + ", f(x): " + (h() + depth));
 
                 flip(i, j);
             }
@@ -152,6 +150,35 @@ public class PancakeNumbers {
         lastFrom = lastTo = 0;
 
         return stringBuilder.toString();
+    }
+
+    // This function returns the number of states reachable from the current state
+    public int numAdjacencies () {
+        int n = 0;
+
+        for (int i = 0; i < nums.length; i++)
+            n += i;
+
+        return n;
+    }
+
+    // This frunction returns an array of states reachable from the current state
+    public PancakeNumbersState[] getAdjacentStates () {
+        PancakeNumbersState[] states = new PancakeNumbersState[numAdjacencies()];
+        int count = 0;
+
+        for (int i = 1; i < nums.length; i++)
+            for (int j = i + 1; j < nums.length + 1; j++) {
+                flip(i, j);
+
+                states[count++] = getState();
+
+                flip(i, j);
+            }
+
+        lastFrom = lastTo = 0;
+
+        return states;
     }
 }
 
