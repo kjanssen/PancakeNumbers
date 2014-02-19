@@ -1,3 +1,9 @@
+// File: PancakeNumbers.java
+// Author: Kyle Janssen
+// Contents: This class contains rules and state information for a game called Pancake Numbers. The object of the
+// game is to turn a randomized list of numbers into an ordered list of numbers by reversing the order of blocks
+// of numbers of arbitrary length. The goal is to do this in as few moves as possible.
+
 package com.dynet.kjanssen.PancakeNumbers;
 
 import java.util.Random;
@@ -10,6 +16,8 @@ public class PancakeNumbers {
     private int lastFrom;
     private int lastTo;
 
+
+    // This constructor creates a new PancakeNumbers game of length 'size'.
     public PancakeNumbers (int size) {
 
         if (size == 0)
@@ -25,6 +33,7 @@ public class PancakeNumbers {
         lastTo = -1;
     }
 
+    // This function initializes the game state by randomizing the list of numbers.
     private void initialize() {
 
         Random random = new Random();
@@ -65,11 +74,14 @@ public class PancakeNumbers {
         return out;
     }
 
+    // This function represents one turn being taken by the player
     public void move (int from, int to) {
         flip(from, to);
         turnCount++;
     }
 
+    // This function reverses the order of the numbers between 'from' and 'to'.
+    // Note: this function takes input [1, n], not [0, n - 1]
     private void flip (int from, int to) {
 
         if (from == lastFrom && to == lastTo)
@@ -90,6 +102,7 @@ public class PancakeNumbers {
             nums[i + from - 1] = temp[flipSize - i - 1];
     }
 
+    // This function returns true if the goal state has been reached.
     public Boolean done () {
 
         for (int i = 0; i < nums.length; i++)
@@ -99,6 +112,8 @@ public class PancakeNumbers {
         return true;
     }
 
+    // This function returns the number of breakpoints in the game state. That is,
+    // the number of points in the list where the values are not numerically adjacent.
     public int numBreakpoints () {
 
         int count = 0;
@@ -110,19 +125,21 @@ public class PancakeNumbers {
         return count;
     }
 
+    // This function returns the heuristic value h(x) = 1/2 * the number of breakpoints.
     public int h() {
         return numBreakpoints() / 2;
     }
 
+    // This function returns a String printout of all of the game states reachable from the current state,
+    // along with their heuristic values useful for A*.
     public String getMoves () {
         StringBuilder stringBuilder = new StringBuilder();
-        int currBreakpoints = numBreakpoints();
 
         for (int i = 1; i < nums.length; i++)
             for (int j = i + 1; j < nums.length + 1; j++) {
                 flip(i, j);
 
-                if (true) { //numBreakpoints() < currBreakpoints) {
+                if (true) {
                     stringBuilder.append("\n" + i + ", " + j + ": < ");
                     for (int k = 0; k < nums.length; k++)
                         stringBuilder.append(nums[k] + " ");
@@ -131,6 +148,8 @@ public class PancakeNumbers {
 
                 flip(i, j);
             }
+
+        lastFrom = lastTo = 0;
 
         return stringBuilder.toString();
     }

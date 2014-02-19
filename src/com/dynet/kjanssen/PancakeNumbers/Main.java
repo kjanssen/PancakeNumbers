@@ -1,3 +1,7 @@
+// File: Main.java
+// Author: Kyle Janssen
+// Contents: This is the game loop for the game Pancake Numbers.
+
 package com.dynet.kjanssen.PancakeNumbers;
 
 import java.util.Scanner;
@@ -10,7 +14,9 @@ public class Main {
         String choice = "y";
 
         while ("y".equals(choice)) {
-            System.out.print("\nHow many numbers do you want to play with? ");
+            System.out.print("\nWelcome to Pancake Numbers! Enter the starting and ending indexes of the block you want" +
+                    "to switch,\nand you win when all the numbers are in order. Input \"1 1\" to see as listing of neighbor states." +
+                    "\n\nHow many numbers do you want to play with? ");
             int n = input.nextInt();
 
             PancakeNumbers pancakeNumbers = new PancakeNumbers(n);
