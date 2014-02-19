@@ -165,13 +165,15 @@ public class PancakeNumbers {
     // This frunction returns an array of states reachable from the current state
     public PancakeNumbersState[] getAdjacentStates () {
         PancakeNumbersState[] states = new PancakeNumbersState[numAdjacencies()];
+        PancakeNumbersState parent = getState();
         int count = 0;
 
         for (int i = 1; i < nums.length; i++)
             for (int j = i + 1; j < nums.length + 1; j++) {
                 flip(i, j);
 
-                states[count++] = getState();
+                states[count] = getState();
+                states[count++].setParent(parent);
 
                 flip(i, j);
             }

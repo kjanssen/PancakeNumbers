@@ -5,15 +5,22 @@
 
 package com.dynet.kjanssen.PancakeNumbers;
 
+import java.util.Arrays;
+
 public class PancakeNumbersState {
 
     private int[] nums;
     private int h, g;
+    private PancakeNumbersState parent;
 
     public PancakeNumbersState (int[] nums, int h, int g) {
         this.nums = nums;
         this.h = h;
         this.g = g;
+    }
+
+    public void setParent (PancakeNumbersState parent) {
+        this.parent = parent;
     }
 
     public int getH() {
@@ -37,5 +44,29 @@ public class PancakeNumbersState {
         stringBuilder.append(">  h(x): " + h + ", g(x): " + g + ", f(x): " + this.getF());
 
         return stringBuilder.toString();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        PancakeNumbersState that = (PancakeNumbersState) o;
+
+        if (g != that.g) return false;
+        if (h != that.h) return false;
+        if (!Arrays.equals(nums, that.nums)) return false;
+        if (parent != null ? !parent.equals(that.parent) : that.parent != null) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = nums != null ? Arrays.hashCode(nums) : 0;
+        result = 31 * result + h;
+        result = 31 * result + g;
+        result = 31 * result + (parent != null ? parent.hashCode() : 0);
+        return result;
     }
 }
